@@ -17,7 +17,7 @@ public class TaskController : ControllerBase
 {
     [Route("[action]")]
     [HttpPost]
-    public async Task<ActionResult<List<CreateTaskRequest>>> crear([BindRequired] string id_usuario, [BindRequired] string titulo, [BindRequired] string descripcion, [BindRequired] DateTime fecha_fin, [BindRequired] DateTime fecha_inicio, Boolean estado)
+    public async Task<ActionResult<List<CreateTaskRequest>>> crear([BindRequired] string id_usuario, [BindRequired] string titulo, [BindRequired] string descripcion, [BindRequired] DateTime fecha_fin, [BindRequired] DateTime fecha_inicio)
     {
         var cadCon = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build().GetSection("ConnectionStrings")["conn_bd"];
         XDocument xmlParam = XDocument.Parse("<TaskModel>" +
@@ -26,7 +26,7 @@ public class TaskController : ControllerBase
             "<descripcion>" + descripcion + "</descripcion>" +
             "<fecha_fin>" + fecha_fin  + "</fecha_fin>" +
             "<fecha_inicio>" + fecha_inicio + "</fecha_inicio>" +
-            "<estado>" + estado + "</estado>" +
+            "<estado>" + Boolean.Parse("True") + "</estado>" +
             "</TaskModel>");
         Console.WriteLine(xmlParam.ToString());
         DataSet dsResultados = await DBXmlMethods.EjecutaBase("TaskManager", cadCon, "crear", xmlParam);
